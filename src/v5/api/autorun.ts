@@ -121,6 +121,10 @@ export type IReactionOptions = IAutorunOptions & {
     equals?: IEqualsComparer<any>
 }
 
+/**
+ *
+ * @param f Lambda 匿名函数
+ */
 const run = (f: Lambda) => f()
 
 function createSchedulerFromOptions(opts: IReactionOptions) {
@@ -155,7 +159,7 @@ export function reaction<T>(
         name,
         opts.onError ? wrapErrorHandler(opts.onError, effect) : effect
     )
-    const runSync = !opts.scheduler && !opts.delay
+    const runSync = !opts.scheduler && !opts.delay // 同步执行判断（当没有调度计划且没有延迟时间，则认为是同步执行）
     const scheduler = createSchedulerFromOptions(opts)
 
     let firstTime = true
@@ -212,6 +216,11 @@ export function reaction<T>(
     return r.getDisposer()
 }
 
+/**
+ *
+ * @param errorHandler 触发异常之后的回调函数
+ * @param baseFn 正常执行的函数
+ */
 function wrapErrorHandler(errorHandler, baseFn) {
     return function() {
         try {

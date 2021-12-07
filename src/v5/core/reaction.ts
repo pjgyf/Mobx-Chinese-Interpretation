@@ -221,7 +221,8 @@ export function onReactionError(handler: (error: any, derivation: IDerivation) =
  */
 const MAX_REACTION_ITERATIONS = 100
 
-let reactionScheduler: (fn: () => void) => void = f => f()
+type ReactionSchedulerType = (fn: () => void) => void
+let reactionScheduler: ReactionSchedulerType = f => f()
 
 export function runReactions() {
     /**
